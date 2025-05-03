@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Payment</title>
+  <link rel="stylesheet" href="style2.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="payment-container">
+    <div class="product-details">
+      <div class="product-image" id="productImage"></div>
+      <div class="product-info">
+        <h2 id="productName">Product Name</h2>
+        <p id="productDescription">Product description...</p>
+        <p><strong>Category:</strong> <span id="productCategory"></span></p>
+        <p><strong>Price:</strong> ₹<span id="productPrice"></span></p>
+        <div class="payment-section">
+          <button class="pay-btn-modern" onclick="showPaymentPopup()">
+            <i class="fas fa-wallet"></i> Proceed to Payment
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<!-- Payment Section -->
+
+  
+  <!-- QR Code Popup -->
+  <div id="qrPopup" class="qr-popup-modern">
+  
+
+    <div class="qr-content-modern">
+      <span class="close-btn-modern" onclick="closePaymentPopup()">&times;</span>
+      <h2>Scan to Pay</h2>
+      <img src="payment.jpg" alt="QR Code" class="qr-img-modern" />
+      <p class="upi-id-modern">UPI ID: <strong>yourupi@bank</strong></p>
+      <h3>After payment</h3>
+      <div class="payment-id-section">
+        <input type="text" id="manualPaymentId" placeholder="Enter your UPI Reference ID" />
+        <button onclick="sendPaymentId()" class="send-id-btn">Send My Payment ID</button>
+
+      </div>
+      
+    </div>
+  </div>
+  
+
+
+  <!-- Checkmark Success Animation -->
+  <div id="successPopup" class="success-popup">
+    <button id="adminConfirmBtn" style="display:none;" onclick="adminConfirmPayment()">✅ Confirm Payment</button>
+    <div class="checkmark-wrapper">
+      <svg class="checkmark" viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+        <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16" />
+      </svg>
+      <p class="success-message">Payment Successful!</p>
+      <!-- Hidden Admin Confirm Button -->
+
+    </div>
+  </div>
+  
+
+
+  
+  <script>
+    import { ref, update } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+    function sendPaymentId() {
+  const enteredId = document.getElementById("manualPaymentId").value.trim();
+  if (!enteredId) {
+    alert("❌ Please enter your UPI reference ID.");
+    return;
+  }
+
+  const latestRequestRef = ref(db, 'latestRequest');
+
+  update(latestRequestRef, {
+    id: enteredId,
+    time: new Date().toISOString()
+  })
+    .then(() => {
+      alert("✅ Your payment ID was sent to the admin.");
+      document.getElementById("manualPaymentId").value = "";
+    })
+    .catch((error) => {
+      console.error("❌ Error sending ID:", error);
+      alert("❌ Something went wrong. Try again.");
+    });
+}
+  </script>
+ 
+
+<script>
+function showPaymentPopup() {
+  document.getElementById("qrPopup").style.display = "flex";
+}
+
+    function closePaymentPopup() {
+      document.getElementById("qrPopup").style.display = "none";
+    }
+  </script>
+  <audio id="successSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c1a08d949f.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>let isPaymentConfirmed = false;
+
+  function adminConfirmPayment() {
+    isPaymentConfirmed = true;
+  
+    // ✅ Optional: Store flag in localStorage if user refreshes
+    localStorage.setItem("paymentConfirmed", "yes");
+  
+    // ✅ Show success popup (checkmark, sound, confetti)
+    showPaymentSuccess();
+  }
+  
+  function showPaymentSuccess() {
+  document.getElementById("successPopup").style.display = "flex";
+  document.getElementById("successSound").play();
+
+  if (typeof confetti === "function") {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+
+  // ✅ Add product to cart after success
+  const db = getDatabase();
+const userId = auth.currentUser?.uid;
+const product = JSON.parse(localStorage.getItem("selectedProduct"));
+const productId = Date.now();
+
+if (userId && product) {
+  set(ref(db, `carts/${userId}/${productId}`), product)
+    .then(() => alert("✅ Product added to cart!"))
+    .catch(err => alert("❌ Failed to add to cart: " + err.message));
+}
+
+  // Redirect after 3 seconds
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 3000);
+}
+
+ 
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getDatabase, ref, update, set, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbDaEt1ACIRNyC4QerqZQhTO8VJuNoWfE",
+      authDomain: "marketplace-378f6.firebaseapp.com",
+      databaseURL: "https://marketplace-378f6-default-rtdb.firebaseio.com",
+      projectId: "marketplace-378f6",
+      storageBucket: "marketplace-378f6.appspot.com",
+      messagingSenderId: "519512596002",
+      appId: "1:519512596002:web:b4cd5978ffa111ef55b47b"
+    };
+  
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+  
+    const paymentId = `pay_${Date.now()}`;
+    localStorage.setItem("paymentId", paymentId);
+  
+    set(ref(db, 'payments/' + paymentId), {
+      isConfirmed: false,
+      timestamp: new Date().toISOString()
+    });
+  
+    onValue(ref(db, 'payments/' + paymentId), (snapshot) => {
+      const data = snapshot.val();
+      if (data?.isConfirmed) showPaymentSuccess();
+    });
+  
+    // ✅ EXPORT THIS FUNCTION TO WINDOW so it works from HTML button
+    window.sendPaymentId = function () {
+  const enteredId = document.getElementById("manualPaymentId").value.trim();
+  if (!enteredId) {
+    alert("❌ Please enter your UPI reference ID.");
+    return;
+  }
+
+  update(ref(db, 'latestRequest'), {
+    id: paymentId,
+    reference: enteredId,
+    time: new Date().toISOString()
+  })
+  .then(() => {
+    alert("✅ Payment ID sent to admin.");
+    document.getElementById("manualPaymentId").value = "";
+
+    // ✅ Also store payment reference to 'payment_references'
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const product = JSON.parse(localStorage.getItem("selectedProduct"));
+        push(ref(db, 'payment_references'), {
+          userId: user.uid,
+          payId: enteredId,
+          productId: product?.product_id || "unknown",
+          productName: product?.product_name || "unknown",
+          timestamp: new Date().toISOString()
+        });
+      }
+    });
+
+  })
+  .catch((err) => {
+    console.error(err);
+    alert("❌ Failed to send payment ID.");
+  });
+};
+
+    window.adminConfirmPayment = function () {
+      update(ref(db, 'payments/' + paymentId), {
+        isConfirmed: true
+      })
+      .then(() => {
+        localStorage.setItem("paymentConfirmed", "yes");
+        showPaymentSuccess();
+      })
+      .catch(console.error);
+    };
+  
+    function showPaymentSuccess() {
+  document.getElementById("successPopup").style.display = "flex";
+  document.getElementById("successSound").play();
+
+  if (typeof confetti === "function") {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+
+  // ✅ Add to cart after success
+  const product = JSON.parse(localStorage.getItem("selectedProduct"));
+  const productId = Date.now();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user && product) {
+      set(ref(db, `carts/${user.uid}/${productId}`), product)
+        .then(() => console.log("✅ Product added to cart!"))
+        .catch(err => console.error("❌ Failed to add to cart: " + err.message));
+    }
+  });
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 3000);
+}
+
+  
+    window.onload = () => {
+      const product = JSON.parse(localStorage.getItem('selectedProduct'));
+      if (product) {
+        document.getElementById('productName').textContent = product.product_name;
+        document.getElementById('productDescription').textContent = product.description;
+        document.getElementById('productCategory').textContent = product.category;
+        document.getElementById('productPrice').textContent = product.price;
+        document.getElementById('productImage').style.backgroundImage = `url(${product.image_url})`;
+      } else {
+        document.querySelector('.payment-container').innerHTML = '<p style="text-align:center">No product selected.</p>';
+      }
+  
+      if (localStorage.getItem("paymentConfirmed") === "yes") {
+        localStorage.removeItem("paymentConfirmed");
+        showPaymentSuccess();
+      }
+  
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key.toLowerCase() === "k") {
+          document.getElementById("adminConfirmBtn").style.display = "inline-block";
+        }
+      });
+    };
+  </script>
+  
+</body>
+</html>

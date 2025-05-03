@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Payment Confirmation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(-45deg, #ff6ec4, #7873f5, #3bf0e4, #ffd86f);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #333;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.admin-box {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+
+    .admin-box h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .admin-box p {
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: #666;
+    }
+    .admin-box input {
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.admin-box input:focus {
+  border-color: #007bff;
+}
+
+.admin-box button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-box button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+
+
+    @media (max-width: 500px) {
+      .admin-box {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-box">
+    <h2>Admin Panel</h2>
+    <p>Paste or auto-fill the Payment ID received from user:</p>
+    <input type="text" id="paymentIdInput" placeholder="Enter PayID">
+<button onclick="confirmPayment()">Confirm Payment</button>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+  
+    // ✅ Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbDaEt1ACIRNyC4QerqZQhTO8VJuNoWfE",
+      authDomain: "marketplace-378f6.firebaseapp.com",
+      databaseURL: "https://marketplace-378f6-default-rtdb.firebaseio.com",
+      projectId: "marketplace-378f6",
+      storageBucket: "marketplace-378f6.appspot.com",
+      messagingSenderId: "519512596002",
+      appId: "1:519512596002:web:b4cd5978ffa111ef55b47b"
+    };
+  
+    // ✅ Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+  
+    // ✅ Auto-fill latest requested payment ID
+    const paymentInput = document.getElementById("paymentIdInput");
+    const latestRequestRef = ref(db, 'latestRequest/id');
+  
+    onValue(latestRequestRef, (snapshot) => {
+      const latestId = snapshot.val();
+      if (latestId && paymentInput) {
+        paymentInput.value = latestId;
+      }
+    });
+  
+    // ✅ Confirm payment button handler
+    window.confirmPayment = function () {
+      const id = paymentInput.value.trim();
+      if (!id) {
+        alert("❌ Please enter a valid payment ID.");
+        return;
+      }
+  
+      const paymentRef = ref(db, 'payments/' + id);
+  
+      update(paymentRef, { isConfirmed: true })
+        .then(() => {
+          alert(`✅ Payment confirmed for ID: ${id}`);
+          paymentInput.value = "";
+        })
+        .catch((error) => {
+          console.error("Error confirming payment:", error);
+          alert("❌ Failed to confirm payment. Please try again.");
+        });
+    };
+  </script>
+  
+</body>
+</html>

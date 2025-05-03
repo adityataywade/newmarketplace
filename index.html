@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market place</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Back to Top Button -->
+<button id="backToTopBtn" title="Go to top">↑</button>
+
+<!-- JavaScript -->
+<script>
+    window.onscroll = function() {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        const btn = document.getElementById("backToTopBtn");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    }
+
+    document.getElementById('backToTopBtn').addEventListener('click', function(){
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+<header>
+    <div class="navbar">
+      
+        <div class="nav-logo">
+          <img src="EKD logo.jpeg" alt="Logo" class="logo-img" />
+        </div>
+      
+        <div class="nav-cart" onclick="window.location.href='cart.html'">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Cart</span>
+          <span id="cart-count" class="cart-badge">0</span>
+        </div>
+        
+        
+        <div class="nav-search">
+          <select class="select-search" id="categoryFilter">
+            <option value="All">All</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Books">Books</option>
+            <option value="Calculators">Calculators</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Smartphones">Smartphones</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Pets">Pets</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Home Essentials">Home Essentials</option>
+            <option value="Art & Craft">Art & Craft</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Sports">Sports</option>
+            <option value="Music">Music</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Toys">Toys</option>
+            <option value="Other">Other</option>
+          </select>
+          
+          <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+
+
+          <div class="search-">
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="nav-user" style="color:white; font-weight: bold; margin-right: 100px;">
+            <span id="userEmail" style="display: none;"></span>
+          </div>
+        <div class="nav-login">
+          <button id="navbarLoginBtn" class="login-btn">Login</button>
+          <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
+</div>
+<div id="recaptcha-container"></div>
+
+           <!-- Admin login -->
+        <button id="adminLoginBtn" class="login-btn">Admin</button>
+
+     
+      </div>
+      
+    <div class="body">
+        <div class="p">
+            <h2 class="text">Marketplace</h2>
+        </div>
+    </div>
+    
+    
+</header>
+
+  <div class="trial">
+    <h1>Available Items</h1>
+  </div>
+
+    <div class="shop-section">
+      <div class="scrollable-products" id="scrollableProducts"></div>
+      <div class="grid-products" id="gridProducts"></div>
+      
+  </div>
+
+  <!-- SELL PRODUCT  -->
+  <section id="sell" class="sell-section">
+    <div class="sell-container">
+      <h2 class="sell-title">Sell Your Product</h2>
+      <p class="sell-subtitle">Fill the details below and reach thousands of customers!</p>
+  
+      <form id="sellForm" class="sell-form">
+        <div class="form-group">
+          <input type="text" name="product_name" placeholder="Product Name" required>
+        </div>
+        <div class="form-group">
+          <select name="category" required>
+            <option value="">Select a category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Books">Books</option>
+            <option value="Calculators">Calculators</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Smartphones">Smartphones</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Art & Craft">Art & Craft</option>
+            <option value="Sports">Sports</option>
+            <option value="Music">Music</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        
+        
+        <div class="form-group">
+          <input type="number" name="price" placeholder="Price (in ₹)" required>
+        </div>
+        <div class="form-group">
+          <textarea name="description" placeholder="Description" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <input type="file" name="image_url" id="imageFile" accept="image/*" />
+
+
+
+        </div>
+        <div id="loading-spinner" style="display: none;">
+            <p>Submitting...</p>
+          </div>
+          
+        <button type="submit" class="sell-btn">Submit Product</button>
+      </form>
+    </div>
+  </section>
+
+
+<!-- new footer -->
+<footer class="marketplace-footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <a href="#" class="footer-logo-link">
+          <img src="EKD logo.jpeg" alt="Marketplace Logo" width="150px">
+        </a>
+      </div>
+      <div class="footer-links">
+        <div class="footer-link-column">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-link-column">
+          <h3>Customer Service</h3>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-link-column">
+          <h3>Follow Us</h3>
+          <ul class="social-media">
+            <!-- <li><a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a></li> -->
+            <li><a href="https://www.instagram.com/aditya_taywade123?igsh=MWg2d2l6c2R1amZjZw==" class="social-icon instagram"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/aditya-taywade-b514b4331?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-icon linkedin"><i class="fab fa-linkedin"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Marketplace | All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Font Awesome CDN for Social Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  
+
+
+
+<!-- sell product js  -->
+ <script>
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+// import { onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const cartRef = ref(db, `carts/${user.uid}`);
+    onValue(cartRef, (snapshot) => {
+      const cartItems = snapshot.val();
+      const count = cartItems ? Object.keys(cartItems).length : 0;
+      const badge = document.getElementById("cartBadge");
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-block' : 'none';
+      }
+    });
+  }
+});
+
+
+ </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+  
+    // ✅ 1. DEFINE CONFIG FIRST
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbDaEt1ACIRNyC4QerqZQhTO8VJuNoWfE",
+      authDomain: "marketplace-378f6.firebaseapp.com",
+      databaseURL: "https://marketplace-378f6-default-rtdb.firebaseio.com",
+      projectId: "marketplace-378f6",
+      storageBucket: "marketplace-378f6.firebasestorage.app",
+      messagingSenderId: "519512596002",
+      appId: "1:519512596002:web:b4cd5978ffa111ef55b47b",
+      measurementId: "G-7XT82KHEGS"
+    };
+  
+    // ✅ 2. INITIALIZE FIREBASE
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    // Show login modal when Login button in navbar is clicked
+// Login popup logic
+document.getElementById('navbarLoginBtn').onclick = () => {
+  document.getElementById('loginModal').style.display = 'block';
+};
+
+document.getElementById('logoutBtn').onclick = () => {
+  signOut(auth);
+};
+
+// Auth state updates
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+    const userEmailDisplay = document.getElementById('userEmail');
+if (userEmailDisplay) {
+  userEmailDisplay.textContent = `Your ID is - ${user.email}`;
+}
+
+    document.getElementById('userEmail').style.display = 'inline-block';
+    document.getElementById('navbarLoginBtn').style.display = 'none';
+  } else {
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('userEmail').style.display = 'none';
+    document.getElementById('navbarLoginBtn').style.display = 'inline-block';
+  }
+});
+
+import { signInWithPhoneNumber, RecaptchaVerifier } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+// Setup reCAPTCHA
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+  size: 'invisible',
+  callback: (response) => {
+    // reCAPTCHA solved
+  }
+});
+
+
+const adminCredentials = {
+  username: "adminuser",
+  password: "789456123"
+};
+
+let isAdmin = false; // Track admin state
+
+// Show admin modal on Admin button click
+document.getElementById("adminLoginBtn").onclick = () => {
+  document.getElementById("adminLoginModal").style.display = "block";
+};
+
+// Handle admin login
+document.getElementById("adminLoginSubmit").onclick = () => {
+  const username = document.getElementById("adminUsername").value;
+  const password = document.getElementById("adminPassword").value;
+
+  if (
+    username === adminCredentials.username &&
+    password === adminCredentials.password
+  ) {
+    alert("✅ Admin logged in!");
+    isAdmin = true;
+    document.getElementById("adminLoginModal").style.display = "none";
+    displayProducts(); // refresh product cards with delete buttons
+  } else {
+    alert("❌ Invalid admin credentials.");
+  }
+};
+
+
+
+  
+    // ✅ 3. AUTH UI LOGIC
+    import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+document.getElementById('registerBtn').onclick = () => {
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      // ✅ Send verification email
+      sendEmailVerification(user).then(() => {
+        alert("✅ Registered! A verification email has been sent. Please verify before logging in.");
+        document.getElementById('loginModal').style.display = 'none';
+        signOut(auth); // force logout until they verify
+      });
+    })
+    .catch((e) => alert("❌ Registration failed: " + e.message));
+};
+
+
+  
+    document.getElementById('logoutBtn').onclick = () => signOut(auth);
+  
+    let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+});
+
+import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+document.getElementById('googleLoginBtn').onclick = () => {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+    .then(() => {
+      alert("✅ Google Sign-In successful!");
+      document.getElementById('loginModal').style.display = 'none';
+    })
+    .catch((e) => alert("❌ Google Sign-In failed: " + e.message));
+};
+document.getElementById('loginBtn').onclick = () => {
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      if (userCredential.user.emailVerified) {
+        alert("✅ Logged in!");
+        document.getElementById('loginModal').style.display = 'none';
+      } else {
+        alert("❌ Please verify your email before logging in.");
+        signOut(auth); // logout if not verified
+      }
+    })
+    .catch((e) => alert("❌ Login failed: " + e.message));
+};
+
+  
+    // ✅ 4. SELL FORM SUBMISSION
+    const form = document.getElementById('sellForm');
+    const spinner = document.getElementById('loading-spinner');
+    const cloudName = 'dobzp321s';
+    const uploadPreset = 'your_upload_preset';
+  
+    form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentUser) {
+    alert("Please log in to submit your product.");
+    document.getElementById('loginModal').style.display = 'block';
+    return;
+  }
+
+      e.preventDefault();
+      spinner.style.display = 'block';
+  
+      const imageFile = document.getElementById('imageFile').files[0];
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      formData.append('upload_preset', uploadPreset);
+  
+      try {
+        const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const cloudinaryData = await cloudinaryRes.json();
+console.log("Cloudinary Response:", cloudinaryData);
+
+  
+        if (!cloudinaryData.secure_url) throw new Error('Cloudinary upload failed');
+  
+        const product = {
+          product_name: form.product_name.value,
+          category: form.category.value,
+          price: form.price.value,
+          description: form.description.value,
+          image_url: cloudinaryData.secure_url
+        };
+  
+        await push(ref(db, 'products'), product);
+  
+        alert('✅ Product submitted!');
+        form.reset();
+        spinner.style.display = 'none';
+      } catch (err) {
+        console.error(err);
+        alert('❌ Error: ' + err.message);
+        spinner.style.display = 'none';
+      }
+    });
+  
+    // ✅ 5. FETCH AND DISPLAY PRODUCTS
+    const scrollableContainer = document.getElementById('scrollableProducts');
+const gridContainer = document.getElementById('gridProducts');
+scrollableContainer.innerHTML = '';
+gridContainer.innerHTML = '';
+
+    const productsRef = ref(db, 'products');
+  
+  // Dropdown change event listener
+  document.getElementById('categoryFilter').addEventListener('change', () => {
+  const search = document.getElementById('searchInput').value.trim();
+  displayProducts(search); // refresh based on selected filter and search
+});
+function displayProducts(query = '') {
+  const selectedCategory = document.getElementById('categoryFilter').value;
+  const gridContainer = document.getElementById('gridProducts');
+  gridContainer.innerHTML = '';
+
+  const productsRef = ref(db, 'products');
+  onValue(productsRef, (snapshot) => {
+    gridContainer.innerHTML = '';
+
+    let rowDiv = null;
+    let count = 0;
+
+    snapshot.forEach((child) => {
+      const key = child.key;
+      const p = child.val();
+
+      if (selectedCategory !== 'All' && p.category !== selectedCategory) return;
+      if (query && !p.product_name.toLowerCase().includes(query.toLowerCase()) &&
+          !p.description.toLowerCase().includes(query.toLowerCase())) return;
+
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image" style="background-image: url(${p.image_url})"></div>
+        <h3>${p.product_name}</h3>
+        <p>${p.description}</p>
+        <p><strong>Price:</strong> ₹${p.price}</p>
+        <p><strong>Category:</strong> ${p.category}</p>
+        ${isAdmin ? `<button class="delete-btn" data-key="${key}">Delete</button>` : ''}
+      `;
+
+      card.addEventListener("click", () => {
+        localStorage.setItem("selectedProduct", JSON.stringify(p));
+        window.location.href = "payment.html";
+      });
+
+      // Create a new horizontal row every 2 cards
+      if (count % 2 === 0) {
+        rowDiv = document.createElement('div');
+        rowDiv.className = 'scroll-row';
+        gridContainer.appendChild(rowDiv);
+      }
+
+      rowDiv.appendChild(card);
+      count++;
+
+      if (isAdmin) {
+        const deleteBtn = card.querySelector('.delete-btn');
+        deleteBtn.onclick = async (e) => {
+          e.stopPropagation();
+          await remove(ref(db, 'products/' + key));
+          alert('🗑️ Product deleted!');
+        };
+      }
+    });
+  });
+}
+
+
+displayProducts(); // show all products initially
+
+
+
+  document.getElementById('searchInput').addEventListener('input', function () {
+  const query = this.value.trim();
+  displayProducts(query); // call function with search keyword
+});
+
+
+
+  </script>
+ <!-- Login Modal -->
+ 
+ <div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+    <h2>Login or Register</h2>
+
+    <!-- Email Login -->
+    <input type="email" id="authEmail" placeholder="Enter your email">
+    <input type="password" id="authPassword" placeholder="Enter your password">
+
+   <!-- Google Login -->
+   <button id="googleLoginBtn" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" />
+    <span>Sign in with Google</span>
+  </button>
+  
+    <!-- Buttons -->
+    <div class="btn-group">
+      <button id="loginBtn">Login</button>
+      <button id="registerBtn">Register</button>
+    </div>
+  </div>
+</div>
+
+  
+  
+  
+    
+  
+  <div id="adminLoginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="document.getElementById('adminLoginModal').style.display='none'">&times;</span>
+      <h2>Admin Login</h2>
+      <input type="text" id="adminUsername" placeholder="Username">
+      <input type="password" id="adminPassword" placeholder="Password">
+      <button id="adminLoginSubmit" class="admin-btn">Login as Admin</button>
+
+    </div>
+  </div>
+  
+      
+      
+  
+
+    
+        
+    
+</body>
+</html>
