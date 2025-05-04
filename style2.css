@@ -204,11 +204,11 @@ body {
 
 .close-btn-modern {
   position: absolute;
-  top: 16px;
-  right: 20px;
-  font-size: 26px;
+  top: 30px;
+  right: 30px;
+  font-size: 30px;
+  color: white;
   cursor: pointer;
-  color: #666;
 }
 
 @keyframes popIn {
@@ -285,6 +285,22 @@ body {
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 6px;
+}
+.back-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
 }
 
 .send-id-btn {
