@@ -175,6 +175,7 @@ html, body {
 
 @media (max-width: 767px) {
   .navbar {
+    height: 100px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -195,7 +196,7 @@ html, body {
   .nav-search {
     flex-direction: row;
     width: 50%;
-    gap: 4px;
+    gap: 2.2px;
     padding-left: 4px;
   }
   .nav-search,
@@ -265,7 +266,7 @@ html, body {
 
 .search-input {
   width: 35%;
-  min-width: 70px;
+  min-width: 100px;
   font-size: 0.8rem;
   padding: 2px 6px;
 }
@@ -544,14 +545,6 @@ body {
 
 
 /* Media Queries for Mobile Responsiveness */
-
-
-
-  .select-search {
-      width: 100%;
-      margin-bottom: 8px;
-  }
-
 
 
 .body {
