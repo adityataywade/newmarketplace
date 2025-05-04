@@ -134,7 +134,7 @@ html, body {
   color: #ffcc00;
 }
 
-.cart-badge {
+/* .cart-badge {
   background: red;
   color: white;
   font-size: 0.7rem;
@@ -142,7 +142,7 @@ html, body {
   border-radius: 50%;
   margin-left: 6px;
 }
-
+ */
 
   .nav-login,
   .nav-cart,
@@ -169,17 +169,70 @@ html, body {
     flex: 1;
   }
 }
+
+/* mobile nav bar */
+
+
 @media (max-width: 767px) {
   .navbar {
-    flex-direction: column;
-    align-items: stretch;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 2px;
+    padding: 2px 4px;
   }
-
+  .logo-img {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  
+  
   .nav-search {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
+    flex-direction: row;
+    width: 50%;
+    gap: 4px;
+    padding-left: 4px;
   }
+  .nav-search,
+.nav-cart,
+.nav-login,
+#adminLoginBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.admin-login-btn {
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.nav-login,
+.nav-cart,
+#adminLoginBtn {
+  width: auto;
+  min-width: 60px;
+}
+
+.nav-login,
+.nav-cart,
+#adminLoginBtn,
+.nav-logo {
+  flex-shrink: 0;
+}
+.login-btn {
+  padding: 3px 6px;
+  font-size: 0.8rem;
+}
+
+
 /* Ensure cart is always visible and styled */
 .nav-cart {
   color: white;
@@ -189,35 +242,70 @@ html, body {
   align-items: center;
   gap: 6px;
   font-size: 1.1rem;
-  padding: 5px 10px;
+  padding: 2px 4px;
+
   transition: color 0.3s ease;
 }
-
+.nav-cart span {
+  font-size: 0.85rem; /* smaller text */
+}
 .nav-cart i {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .nav-cart:hover {
   color: #ffcc00;
 }
-
-  .select-search,
-  .search-input,
-  .search-icon {
-    width: 100%;
-  }
-
-  .nav-login,
-  .nav-cart,
-  #adminLoginBtn {
-    width: 100%;
-    text-align: center;
-  }
+.select-search {
+  width: 16%;
+  min-width: 40px;
+  font-size: 0.8rem;
+  padding: 4px 2px 2px 2px;
 }
+
+.search-input {
+  width: 35%;
+  min-width: 70px;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+}
+
+
+.search-icon {
+  width: auto;
+  min-width: 24px;
+}
+.admin-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 8px; /* optional spacing */
+}
+#adminLoginBtn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  
+}
+
+
+
+
+.search-icon {
+  width: auto;
+}
+
+
 .login-btn:hover,
 .logout-btn:hover {
   background-color: #019875;
 }
+.login-btn {
+  padding: 2px 4px;
+  font-size: 0.75rem;
+}
+
+
+
 #availableProducts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -226,7 +314,7 @@ html, body {
   max-width: 600px;
   margin: 0 auto; /* center the grid */
 }
-
+}
 /* Mobile: 2 cards per row */
 /* Mobile: scroll first 2 horizontally, rest in grid */
 /* MOBILE (max-width: 767px): scroll 2 cards horizontally */
