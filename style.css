@@ -175,7 +175,7 @@ html, body {
 
 @media (max-width: 767px) {
   .navbar {
-    height: 100px;
+    height: 60px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
